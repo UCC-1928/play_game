@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import "tailwindcss";
+
+:root {
+  --color-pacman-yellow: #FFFF00;
+  --color-maze-blue: #2121DE;
+  --color-ghost-red: #FF0000;
+  --color-ghost-pink: #FFB8FF;
+  --color-ghost-cyan: #00FFFF;
+  --color-ghost-orange: #FFB852;
+}
+
+@theme {
+  --font-pixel: "Press Start 2P", monospace;
+  --color-brand: var(--color-pacman-yellow);
+  --color-maze: var(--color-maze-blue);
+  --color-ghost: var(--color-ghost-red);
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* 徹底禁止捲軸出現 */
+}
+
+body {
+  font-family: var(--font-pixel);
+  background-color: #000; /* True black for arcade feel */
+  color: #fff;
+  image-rendering: pixelated;
+}
+
+/* 迷宮樣式邊框 */
+.pixel-border {
+  border: 4px solid var(--color-maze-blue);
+  box-shadow: 
+    0 0 0 4px #000,
+    0 0 0 8px var(--color-maze-blue);
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.pacman-text {
+  color: var(--color-pacman-yellow);
+  text-shadow: 2px 2px #000;
+}
+
+.ghost-btn:hover {
+  background-color: var(--color-maze-blue);
+  box-shadow: 4px 4px var(--color-ghost-cyan);
+}
+
+/* 模擬小精靈豆豆背景 (選配) */
+.dot-bg {
+  background-image: radial-gradient(#fff 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* 小精靈本體動畫 */
+.pacman-sprite {
+  width: 40px;
+  height: 40px;
+  background-color: var(--color-pacman-yellow);
+  border-radius: 50%;
+  position: relative;
+}
+
+.pacman-sprite::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border: 20px solid transparent;
+  border-right-color: black;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: chomp 0.3s ease-in-out infinite;
+}
+
+@keyframes chomp {
+  0%, 100% { border-right-color: transparent; }
+  50% { border-right-color: black; }
+}
+
+/* 移動路徑動畫 */
+.move-horizontal {
+  animation: moveX 10s linear infinite;
+}
+
+@keyframes moveX {
+  0% { transform: translateX(-100px); }
+  100% { transform: translateX(calc(100vw + 100px)); }
+}
+
+.pacman-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ffb8ae;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #ffb8ae;
+}
+
+/* 幽靈繪製 (Blinky & Pinky) */
+.ghost-container {
+  position: fixed; /* 改為 fixed 確保座標相對於視窗 */
+  top: 0;
+  left: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ghost-body {
+  width: 36px;
+  height: 36px;
+  background-color: var(--ghost-color, var(--color-ghost-red));
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  position: relative;
+}
+
+.ghost-pink {
+  --ghost-color: var(--color-ghost-pink);
+}
+
+.ghost-red {
+  --ghost-color: var(--color-ghost-red);
+}
+
+.ghost-eyes {
+  display: flex;
+  justify-content: space-between;
+  width: 24px;
+  padding-top: 10px;
+  margin: 0 auto;
+}
+
+.eye-white {
+  width: 8px;
+  height: 10px;
+  background-color: white;
+  border-radius: 4px;
+  position: relative;
+}
+
+.eye-blue {
+  width: 4px;
+  height: 4px;
+  background-color: #2121DE;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 2px;
+  right: 1px;
+}
+
+.ghost-feet {
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  display: flex;
+}
+
+.foot {
+  flex: 1;
+  height: 10px;
+  background-color: var(--ghost-color, var(--color-ghost-red));
+  border-radius: 0 0 100% 100%;
+}
+
+/* 幽靈遊走動畫 - 紅幽靈 */
+.move-wander-red {
+  animation: wander-red 30s linear infinite;
+}
+
+@keyframes wander-red {
+  0% { transform: translate(10vw, 15vh); }
+  25% { transform: translate(70vw, 20vh); }
+  50% { transform: translate(20vw, 65vh); }
+  75% { transform: translate(65vw, 70vh); }
+  100% { transform: translate(10vw, 15vh); }
+}
+
+/* 幽靈遊走動畫 - 粉幽靈 */
+.move-wander-pink {
+  animation: wander-pink 25s linear infinite;
+}
+
+@keyframes wander-pink {
+  0% { transform: translate(80vw, 70vh); }
+  25% { transform: translate(20vw, 60vh); }
+  50% { transform: translate(75vw, 15vh); }
+  75% { transform: translate(15vw, 25vh); }
+  100% { transform: translate(80vw, 70vh); }
+}
