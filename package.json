@@ -9,6 +9,9 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "overrides": {
+    "vite": "$vite"
+  },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.1",
     "lucide-react": "^0.577.0",
